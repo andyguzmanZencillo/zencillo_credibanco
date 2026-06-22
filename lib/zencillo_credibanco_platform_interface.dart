@@ -41,4 +41,30 @@ abstract class ZencilloCredibancoPlatform extends PlatformInterface {
   Future<Result<String, String>> credibancoNFC() {
     throw UnimplementedError('credibancoNFC() has not been implemented.');
   }
+
+  Future<Result<CredibancoResponse, String>> credibancoQr({
+    required String amount,
+    required String tax,
+  }) {
+    throw UnimplementedError('credibancoQr() has not been implemented.');
+  }
+
+  Future<Result<CredibancoResponse, String>> credibancoAnulacion({
+    required String receiptId,
+  }) {
+    throw UnimplementedError('credibancoAnulacion() has not been implemented.');
+  }
+
+  Future<Result<CredibancoResponse, String>> credibancoBreb({
+    required String amount,
+    required String tax,
+  }) {
+    throw UnimplementedError('credibancoBreb() has not been implemented.');
+  }
+
+  Future<Result<Map<String, dynamic>, String>> credibancoOtherFunctions() {
+    throw UnimplementedError(
+      'credibancoOtherFunctions() has not been implemented.',
+    );
+  }
 }

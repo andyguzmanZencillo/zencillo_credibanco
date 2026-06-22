@@ -103,4 +103,139 @@ class MethodChannelZencilloCredibanco extends ZencilloCredibancoPlatform {
       return const Result.err('Algo falló!');
     }
   }
+
+  @override
+  Future<Result<CredibancoResponse, String>> credibancoQr({
+    required String amount,
+    required String tax,
+  }) async {
+    try {
+      final response = await method.invokeMethod<dynamic>(
+        'credibancoqr',
+        {
+          'amount': double.parse(amount),
+          'TAX_AMOUNT': double.parse(tax),
+          'tip': '0',
+          'iac': '0',
+        },
+      );
+
+      if (response == null) {
+        return const Result.err(
+          'No se recibió respuesta del método credibancoqr',
+        );
+      }
+
+      final mapped = Map<String, dynamic>.from(response as Map);
+      final operacion = CredibancoResponse.fromJson(mapped);
+
+      log(mapped.toString());
+
+      return Result.ok(operacion);
+    } on PlatformException catch (e) {
+      return Result.err(e.message ?? 'Error de plataforma.');
+    } catch (e, stacktrace) {
+      log('CREDIBANCO QR PAYMENT FAILED ===> $e');
+      log('CREDIBANCO QR PAYMENT FAILED ===> $stacktrace');
+      return const Result.err('Algo falló!');
+    }
+  }
+
+  @override
+  Future<Result<CredibancoResponse, String>> credibancoAnulacion({
+    required String receiptId,
+  }) async {
+    try {
+      final response = await method.invokeMethod<dynamic>(
+        'credibancoAnulacion',
+        {
+          'receiptId': receiptId,
+        },
+      );
+
+      if (response == null) {
+        return const Result.err(
+          'No se recibió respuesta del método credibancoAnulacion',
+        );
+      }
+
+      final mapped = Map<String, dynamic>.from(response as Map);
+      final operacion = CredibancoResponse.fromJson(mapped);
+
+      log(mapped.toString());
+
+      return Result.ok(operacion);
+    } on PlatformException catch (e) {
+      return Result.err(e.message ?? 'Error de plataforma.');
+    } catch (e, stacktrace) {
+      log('CREDIBANCO ANULACION FAILED ===> $e');
+      log('CREDIBANCO ANULACION FAILED ===> $stacktrace');
+      return const Result.err('Algo falló!');
+    }
+  }
+
+  @override
+  Future<Result<CredibancoResponse, String>> credibancoBreb({
+    required String amount,
+    required String tax,
+  }) async {
+    try {
+      final response = await method.invokeMethod<dynamic>(
+        'credibancoBreb',
+        {
+          'amount': double.parse(amount),
+          'TAX_AMOUNT': double.parse(tax),
+          'tip': '0',
+          'iac': '0',
+        },
+      );
+
+      if (response == null) {
+        return const Result.err(
+          'No se recibió respuesta del método credibancoBreb',
+        );
+      }
+
+      final mapped = Map<String, dynamic>.from(response as Map);
+      final operacion = CredibancoResponse.fromJson(mapped);
+
+      log(mapped.toString());
+
+      return Result.ok(operacion);
+    } on PlatformException catch (e) {
+      return Result.err(e.message ?? 'Error de plataforma.');
+    } catch (e, stacktrace) {
+      log('CREDIBANCO BREB PAYMENT FAILED ===> $e');
+      log('CREDIBANCO BREB PAYMENT FAILED ===> $stacktrace');
+      return const Result.err('Algo falló!');
+    }
+  }
+
+  @override
+  Future<Result<Map<String, dynamic>, String>>
+      credibancoOtherFunctions() async {
+    try {
+      final response = await method.invokeMethod<dynamic>(
+        'credibancoOtherFunctions',
+      );
+
+      if (response == null) {
+        return const Result.err(
+          'No se recibió respuesta del método credibancoOtherFunctions',
+        );
+      }
+
+      final mapped = Map<String, dynamic>.from(response as Map);
+
+      log(mapped.toString());
+
+      return Result.ok(mapped);
+    } on PlatformException catch (e) {
+      return Result.err(e.message ?? 'Error de plataforma.');
+    } catch (e, stacktrace) {
+      log('CREDIBANCO OTHER FUNCTIONS FAILED ===> $e');
+      log('CREDIBANCO OTHER FUNCTIONS FAILED ===> $stacktrace');
+      return const Result.err('Algo falló!');
+    }
+  }
 }

@@ -157,4 +157,8 @@ class ZencilloCredibanco {
       ),
     );
   }
+
+  Future<Result<String, String>> credibancoBluetooth() {
+    return ZencilloCredibancoPlatform.instance.credibancoBluetooth();
+  }
 }

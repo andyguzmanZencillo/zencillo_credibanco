@@ -67,4 +67,10 @@ abstract class ZencilloCredibancoPlatform extends PlatformInterface {
       'credibancoOtherFunctions() has not been implemented.',
     );
   }
+
+  Future<Result<String, String>> credibancoBluetooth() {
+    throw UnimplementedError(
+      'credibancoBluetooth() has not been implemented.',
+    );
+  }
 }

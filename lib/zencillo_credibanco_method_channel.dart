@@ -238,4 +238,19 @@ class MethodChannelZencilloCredibanco extends ZencilloCredibancoPlatform {
       return const Result.err('Algo falló!');
     }
   }
+
+  @override
+  Future<Result<String, String>> credibancoBluetooth() async {
+    try {
+      final response = await method.invokeMethod<String>('credibancoBt');
+
+      return Result.ok(response ?? 'Bluetooth configurado');
+    } on PlatformException catch (e) {
+      return Result.err(e.message ?? 'Error de plataforma.');
+    } catch (e, stacktrace) {
+      log('CREDIBANCO BLUETOOTH FAILED ===> $e');
+      log('CREDIBANCO BLUETOOTH FAILED ===> $stacktrace');
+      return const Result.err('Algo falló!');
+    }
+  }
 }

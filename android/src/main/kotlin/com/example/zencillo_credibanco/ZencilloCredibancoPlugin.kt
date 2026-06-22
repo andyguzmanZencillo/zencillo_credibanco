@@ -38,6 +38,10 @@ class ZencilloCredibancoPlugin :
         private const val REQUEST_CANCEL = 10024
         private const val REQUEST_BREB = 10025
         private const val REQUEST_OTHER_FUNCTIONS = 10026
+        private const val REQUEST_BLUETOOTH = 10027
+
+        private const val CREDIBANCO_BLUETOOTH_ACTIVITY =
+            "com.credibanco.smartposperipherals.presentation.activity.ExternalBluetoothActivity"
 
         private const val CREDIBANCO_PACKAGE = "com.credibanco.smartpos"
         private const val CREDIBANCO_PERIPHERALS_PACKAGE = "com.credibanco.smartposperipherals"
@@ -229,6 +233,19 @@ class ZencilloCredibancoPlugin :
                 pendingResult = result
                 launchNfc()
             }
+            "credibancoBt", "bluetooth", "credibancoBluetooth" -> {
+                if (!isPackageInstalled(CREDIBANCO_PERIPHERALS_PACKAGE)) {
+                    result.error(
+                        "APP_NOT_INSTALLED",
+                        "La aplicación de periféricos Credibanco no está instalada.",
+                        null
+                    )
+                    return
+                }
+
+                pendingResult = result
+                launchBluetooth()
+            }
 
             else -> result.notImplemented()
         }
@@ -266,6 +283,8 @@ class ZencilloCredibancoPlugin :
                 REQUEST_SCAN -> handleScanResult(resultCode, data)
 
                 REQUEST_NFC -> handleNfcResult(resultCode, data)
+
+                REQUEST_BLUETOOTH -> handleBluetoothResult(resultCode, data)
 
                 else -> return false
             }
@@ -403,6 +422,29 @@ class ZencilloCredibancoPlugin :
 
         sendIntent.component = component
         currentActivity.startActivityForResult(sendIntent, REQUEST_BREB)
+    }
+
+    private fun launchBluetooth() {
+        val currentActivity = activity
+
+        if (currentActivity == null) {
+            pendingResult?.error("NO_ACTIVITY", "No hay Activity disponible.", null)
+            return
+        }
+
+        val sendIntent = Intent(Intent.ACTION_MAIN)
+
+        sendIntent.putExtra("STATE_BLUETOOTH", true)
+        sendIntent.putExtra("HASH_CODE", HASH_CODE)
+
+        val component = ComponentName(
+            CREDIBANCO_PERIPHERALS_PACKAGE,
+            CREDIBANCO_BLUETOOTH_ACTIVITY
+        )
+
+        sendIntent.component = component
+
+        currentActivity.startActivityForResult(sendIntent, REQUEST_BLUETOOTH)
     }
 
     private fun launchCredibancoOtherFunctions() {
@@ -577,6 +619,9 @@ class ZencilloCredibancoPlugin :
                 buildErrorDetails(resultCode, data?.extras)
             )
         }
+    }
+    private fun handleBluetoothResult(resultCode: Int, data: Intent?) {
+        pendingResult?.success("Bluetooth configurado")
     }
 
     private fun handleScanResult(resultCode: Int, data: Intent?) {

@@ -48,6 +48,30 @@ class ZencilloCredibanco {
     ));
   }
 
+  Future<Result<FormaPagoDetalleModel, String>> credibancoPayComplete({
+    required double total,
+    required double taxTotal,
+    required double subTotal,
+  }) async {
+    final result = await ZencilloCredibancoPlatform.instance.credibanco(
+      amount: total.toString(),
+      tax: taxTotal.toString(),
+    );
+    if (result.isErr()) {
+      return Err(result.unwrapErr());
+    }
+    final data = result.unwrap();
+    return Ok(data.toFormaPagoDetalle(
+      idTurno: 0,
+      numeroTurno: 0,
+      idDocument: 0,
+      total: total,
+      taxTotal: taxTotal,
+      subTotal: subTotal,
+      idFormaPago: 0,
+    ));
+  }
+
   Future<Result<Unit, String>> credibancoPrint(String text) {
     return ZencilloCredibancoPlatform.instance.credibancoPrint(text);
   }
@@ -60,14 +84,28 @@ class ZencilloCredibanco {
     return ZencilloCredibancoPlatform.instance.credibancoNFC();
   }
 
-  Future<Result<CredibancoResponse, String>> credibancoQr({
-    required String amount,
-    required String tax,
-  }) {
-    return ZencilloCredibancoPlatform.instance.credibancoQr(
-      amount: amount,
-      tax: tax,
+  Future<Result<FormaPagoDetalleModel, String>> credibancoQr({
+    required double total,
+    required double taxTotal,
+    required double subTotal,
+  }) async {
+    final result = await ZencilloCredibancoPlatform.instance.credibancoQr(
+      amount: total.toString(),
+      tax: taxTotal.toString(),
     );
+    if (result.isErr()) {
+      return Err(result.unwrapErr());
+    }
+    final data = result.unwrap();
+    return Ok(data.toFormaPagoDetalle(
+      idTurno: 0,
+      numeroTurno: 0,
+      idDocument: 0,
+      total: total,
+      taxTotal: taxTotal,
+      subTotal: subTotal,
+      idFormaPago: 0,
+    ));
   }
 
   Future<Result<CredibancoResponse, String>> credibancoAnulacion({
@@ -78,14 +116,28 @@ class ZencilloCredibanco {
     );
   }
 
-  Future<Result<CredibancoResponse, String>> credibancoBreb({
-    required String amount,
-    required String tax,
-  }) {
-    return ZencilloCredibancoPlatform.instance.credibancoBreb(
-      amount: amount,
-      tax: tax,
+  Future<Result<FormaPagoDetalleModel, String>> credibancoBreb({
+    required double total,
+    required double taxTotal,
+    required double subTotal,
+  }) async {
+    final result = await ZencilloCredibancoPlatform.instance.credibancoBreb(
+      amount: total.toString(),
+      tax: taxTotal.toString(),
     );
+    if (result.isErr()) {
+      return Err(result.unwrapErr());
+    }
+    final data = result.unwrap();
+    return Ok(data.toFormaPagoDetalle(
+      idTurno: 0,
+      numeroTurno: 0,
+      idDocument: 0,
+      total: total,
+      taxTotal: taxTotal,
+      subTotal: subTotal,
+      idFormaPago: 0,
+    ));
   }
 
   Future<Result<Map<String, dynamic>, String>> credibancoOtherFunctions() {
